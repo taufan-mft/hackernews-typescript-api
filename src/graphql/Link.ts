@@ -7,6 +7,14 @@ export const Link = objectType({
         t.nonNull.int("id");
         t.nonNull.string("description");
         t.nonNull.string("url");
+        t.field("postedBy", {   // 1
+            type: "User",
+            resolve(parent, args, context) {  // 2
+                return context.prisma.link
+                    .findUnique({ where: { id: parent.id } })
+                    .postedBy();
+            },
+        });
     }
 })
 
@@ -47,14 +55,14 @@ export const LinkMutation = extendType({
             resolve(parent, args, context) {
                 const {description, url} = args;
 
-                let idCount = links.length + 1;  // 5
-                const link = {
-                    id: idCount,
-                    description: description,
-                    url: url,
-                };
-                links.push(link);
-                return link;
+                const newLink = context.prisma.link.create({
+                    data: {
+                        description: description,
+                        url: url
+                    }
+                });
+                
+                return newLink;
             }
         })
 

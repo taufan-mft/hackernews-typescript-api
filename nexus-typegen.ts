@@ -28,6 +28,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   GenericMessage: { // root type
     message: string; // String!
     status: number; // Int!
@@ -39,6 +43,10 @@ export interface NexusGenObjects {
   }
   Mutation: {};
   Query: {};
+  User: { // root type
+    email: string; // String!
+    id: number; // Int!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -52,6 +60,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   GenericMessage: { // field return type
     message: string; // String!
     status: number; // Int!
@@ -59,18 +71,29 @@ export interface NexusGenFieldTypes {
   Link: { // field return type
     description: string; // String!
     id: number; // Int!
+    postedBy: NexusGenRootTypes['User'] | null; // User
     url: string; // String!
   }
   Mutation: { // field return type
     deletePost: NexusGenRootTypes['GenericMessage']; // GenericMessage!
     post: NexusGenRootTypes['Link']; // Link!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Link'][]; // [Link!]!
   }
+  User: { // field return type
+    email: string; // String!
+    id: number; // Int!
+    links: NexusGenRootTypes['Link'][]; // [Link!]!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   GenericMessage: { // field return type name
     message: 'String'
     status: 'Int'
@@ -78,14 +101,21 @@ export interface NexusGenFieldTypeNames {
   Link: { // field return type name
     description: 'String'
     id: 'Int'
+    postedBy: 'User'
     url: 'String'
   }
   Mutation: { // field return type name
     deletePost: 'GenericMessage'
     post: 'Link'
+    signup: 'AuthPayload'
   }
   Query: { // field return type name
     feed: 'Link'
+  }
+  User: { // field return type name
+    email: 'String'
+    id: 'Int'
+    links: 'Link'
   }
 }
 
@@ -97,6 +127,11 @@ export interface NexusGenArgTypes {
     post: { // args
       description: string; // String!
       url: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
     }
   }
 }

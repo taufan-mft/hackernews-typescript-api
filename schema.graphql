@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 type GenericMessage {
   message: String!
   status: Int!
@@ -10,14 +15,22 @@ type GenericMessage {
 type Link {
   description: String!
   id: Int!
+  postedBy: User
   url: String!
 }
 
 type Mutation {
   deletePost(id: Int!): GenericMessage!
   post(description: String!, url: String!): Link!
+  signup(email: String!, name: String!, password: String!): AuthPayload!
 }
 
 type Query {
   feed: [Link!]!
+}
+
+type User {
+  email: String!
+  id: Int!
+  links: [Link!]!
 }
